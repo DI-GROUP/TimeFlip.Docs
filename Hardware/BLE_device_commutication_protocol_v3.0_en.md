@@ -132,7 +132,7 @@ Auto-pause timer is automatically reset when TimeFlip is flipped to another face
 
 \*\* Autopause function – automatically sets time count on pause after pre-set period of time (timer value).
 
-\*\*\* Pause – time count is set on pause, but the facets continue to be notified (user can turn/flip TimeFlip and assign new tasks to facets).
+\*\*\* Pause – time count is set on pause, but the facets continue to be notified (user can turn/flip TimeFlip and assign new tasks to facets). This appear in history as facet with ID 63 (0b111111).
 
 ### Double tap characteristic / F1196F55-71A4-11E6-BDF4-0800200C9A66
 This characteristics is currently unavailable
