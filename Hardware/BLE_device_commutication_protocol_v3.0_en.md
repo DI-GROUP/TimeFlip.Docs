@@ -129,7 +129,9 @@ Auto-pause timer is automatically reset when TimeFlip is flipped to another face
 0x50 0xAA – Delete current firmware and proceed to firmware loader.
 
 \* lock function  – locks TimeFlip to count time on current active facet and blocks the device from switching facets when TimeFlip is turned or flipped. 
+
 \*\* Autopause function – automatically sets time count on pause after pre-set period of time (timer value).
+
 \*\*\* Pause – time count is set on pause, but the facets continue to be notified (user can turn/flip TimeFlip and assign new tasks to facets).
 
 ### Double tap characteristic / F1196F55-71A4-11E6-BDF4-0800200C9A66
