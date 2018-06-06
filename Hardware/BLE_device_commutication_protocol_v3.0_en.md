@@ -49,9 +49,7 @@ _big-endian_ 0xXXYYZZ  - (x,y,z) acceleration vector.
 ID value of notified facet (0..47)
 
 ### Command result output characteristic / F1196F53-71A4-11E6-BDF4-0800200C9A66
-Output of command result: 
-0x01 – history read request
-0x10 – status request
+Output of command result, for example history read request "0x01" returns result in "Command result output characteristic"
 
 History is read out in packages of 21 bytes.
 History block contains 3 bytes. Example:
@@ -62,7 +60,7 @@ History block contains 3 bytes. Example:
 |    Time    | X | X | X | X | X | X | X | X | X | X |  X |  X |  X |  X |  X |  X |  X |  X |    |    |    |    |    |    |
 |   Facet   |   |   |   |   |   |   |   |   |   |   |    |    |    |    |    |    |    |    |  X |  X |  X |  X |  X |  X |
 
-Maximum amount of time stored in history – 262144 seconds or ~ 3,03 days.
+Maximum amount of time stored in history – 262144 seconds or ~ 3,03 days. New interval created on exceed.
 Maximum facets number – 48
 One package contains 7 history blocks.
 
@@ -101,20 +99,20 @@ Unexecuted command is shown in characteristics as 0xXX 0x01 where 0хХХ – is
 0x01 – history read out request  
 0x02 – delete history
 
-0x03 – calibration reset 
-Resets values for TimeFlip  facets and resets characteristics Calibration version (UUID: F1196F56-71A4-11E6-BDF4-0800200C9A66) to nil.
+0x03 – calibration reset.
+Resets values for TimeFlip  facets and resets characteristics Calibration version (UUID: F1196F56-71A4-11E6-BDF4-0800200C9A66) to zero.
 
 0x04 0x01 – lock function* on
 0x04 0x02 – lock function off
 
-0x05 0xXX 0xXX – auto-pause** (off by default)
+0x05 0xXX 0xXX – auto-pause** (off by default).
 0xXX 0xXX – timer value in minutes after which the auto-pause is activated (0 = auto-pause off)
-Auto-pause timer is automatically reset when TimeFlip is flipped to another facet.
+Auto-pause timer is automatically reset when TimeFlip is flipped to another facet or on successful password write.
 
 0x06 0x01 - pause*** function on
 0x06 0x02 – pause function off
 
-0x10 – status request (response in  “command result outup” shown as 0xXX  0xYY  0xZZ 0xZZ)
+0x10 – status request (response in  “command result outup” shown as 0xXXYYZZZZ)
 0xXX – lock function (0x01 – on, 0x02 – off)
 0xYY - pause (0x01 – on, 0x02 – off)
 0xZZ 0xZZ – auto-pause timer value (in minutes)
@@ -126,7 +124,7 @@ Auto-pause timer is automatically reset when TimeFlip is flipped to another face
 0х30 0xZZ … 0xZZ – set new password 
 0xZZ … 0xZZ – password set, length is 6 symbols
 
-0x50 0xAA – Delete current firmware and proceed to firmware loader.
+0x50 0xAA – Delete current firmware and reboot to firmware loader.
 
 \* lock function  – locks TimeFlip to count time on current active facet and blocks the device from switching facets when TimeFlip is turned or flipped. 
 
@@ -135,7 +133,7 @@ Auto-pause timer is automatically reset when TimeFlip is flipped to another face
 \*\*\* Pause – time count is set on pause, but the facets continue to be notified (user can turn/flip TimeFlip and assign new tasks to facets). This appear in history as facet with ID 63 (0b111111).
 
 ### Double tap characteristic / F1196F55-71A4-11E6-BDF4-0800200C9A66
-This characteristics is currently unavailable
+Reserved for future use
 
 ### Calibration version characteristic / F1196F56-71A4-11E6-BDF4-0800200C9A66
 
@@ -143,12 +141,12 @@ This characteristics is currently unavailable
 |-----|----------------|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 |  Command   | Write, Read | 4            | Saves the value recorded between connections. The value is reset to ”0” when the battery is pulled out or “reset calibration” command is executed (0x03)”. |
 
-This characteristics is used to check whether TimeFlip facets calibration corresponds to facets calibration in the mobile app. The check is performed by comparing value read out from this characteristics and the one stored in the mobile app. When the facets are assigned in TimeFlip, an arbitrary number is written to present characteristics and in the same time in the mobile app. 
+This characteristics is used to check whether TimeFlip facets calibration corresponds to facets calibration in the mobile app. The check is performed by comparing value read out from this characteristics and the one stored in the mobile app. When the facets are first time assigned in TimeFlip, an arbitrary number is written to present characteristics and in the same time in the mobile app. 
 
 ### Password characteristic / F1196F57-71A4-11E6-BDF4-0800200C9A66
 
 | Type    | Access | Size, byte | Description |
 |--------|--------|--------------|---|
-| Password | Write | 6            | Characteristics which requires password to be written in it to allow TimeFlip operation. Resets when TimeFlip is disconnected from a phone. Requires password input after re-connect. |
+| Password | Write | 6            | Requires password to be written in it to allow TimeFlip operation. |
 
-If the password is not provided, or provided incorrect, custom TimeFlip characteristics will return zeros on reading.
+If the password is not provided, or provided incorrect, TimeFlip service's characteristics will return nothing on reading. Requires password input after re-connect.
