@@ -149,4 +149,7 @@ This characteristics is used to check whether TimeFlip facets calibration corres
 |--------|--------|--------------|---|
 | Password | Write | 6            | Requires password to be written in it to allow TimeFlip operation. |
 
-If the password is not provided, or provided incorrect, TimeFlip service's characteristics will return nothing on reading. Requires password input after re-connect.
+If the password is not provided, or provided incorrect, TimeFlip service's characteristics will return nothing on reading. Note that: 
+- TimeFlip requires password input after re-connect to authorize connected device
+- password is reset to default every time the battery is taken out or replaced
+- default password is ASCII "000000" or {0x30, 0x30, 0x30, 0x30, 0x30, 0x30}
