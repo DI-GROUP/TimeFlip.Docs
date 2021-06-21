@@ -45,20 +45,18 @@ Tab. 1 – TimeFlip2 services and characteristics:
 |||<p>Password check /</p><p>F1196F57-71A4-11E6-BDF4-0800200C9A66</p>|6|W|
 |||History data/<br>F1196F58-71A4-11E6-BDF4-0800200C9A66|20|R, W, N|
 
+
 **Firmware Revision String** 
-
 UUID:
-
 0x2A26
 
 |Type|Access|Size, bytes|Description|
 | :-: | :-: | :-: | :-: |
 |Firmware version|<p>Read</p><p></p>|6|<p>Contains stock firmware version.</p><p>0x544676332E31 = “TFv3.xx”</p>|
 
+
 **Battery Level** 
-
 UUID:
-
 0x2A19
 
 |Type|Access|Size, bytes|Description|
