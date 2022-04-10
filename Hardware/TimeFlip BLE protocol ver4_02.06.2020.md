@@ -14,7 +14,7 @@
 
 ver. 4.3.
 
-rev. 20.02.2022**
+rev. 20.02.2022
 
 All values are stored in TimeFlip2 on-board RAM memory and are reset to default when the battery is taken out or replaced.
 
