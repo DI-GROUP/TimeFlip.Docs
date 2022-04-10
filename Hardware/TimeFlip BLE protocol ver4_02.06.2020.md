@@ -315,16 +315,3 @@ The last package contains zeros and the number of the previous event in the sequ
         </tr>
     </tbody>
 </table>
-
-
-
-
-
-
-
-
-
-
-
-
-PAGE10
