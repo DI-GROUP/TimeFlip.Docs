@@ -14,7 +14,7 @@
 
 ver. 4.3.
 
-rev. 06.02.2021**
+rev. 20.02.2022**
 
 All values are stored in TimeFlip2 on-board RAM memory and are reset to default when the battery is taken out or replaced.
 
@@ -121,6 +121,7 @@ Unexecuted command is shown in characteristics as 0xXX 0x01, where 0хХХ is co
 \* Lock – this mode “freezes” TimeFlip to count time on the last active facet and blocks the device from switching facets when TimeFlip is flipped.
 
 \*\* autopause – puts tracker in idle after pre-set timer expires.
+
 \*\*\* pause – time count is set on pause, but the facets continue to be notified (user can flip the tracker and assign new tasks to facets), An interval will be added to the history for the facet with Side + 128.
 
 **Double tap characteristic.**
@@ -132,6 +133,7 @@ F1196F55-71A4-11E6-BDF4-0800200C9A66
 |Type|Access|Size, bytes|Description|
 | :-: | :-: | :-: | :-: |
 |Double tap|Notify|1|<p>When double-tap is detected (recognized) by the device, it sets tracking on pause and sends notification to the mobile app. The message will encode the facet ID and the pause mode.  </p><p>If the received value is less than 128, then it is the facet ID and pause is “off”. Otherwise, 128 shall be subtracted from the received value to yield actual facet ID with the pause “on”.  </p>|
+
 **System state characteristics**
 
 UUID:
@@ -177,9 +179,40 @@ History read request for a single event
 
 After history read-out request is sent (0x01), the number of the event in history will be written to the the characteristic. Example: 
 
-|**Byte number**|**0**|**1**|**2**|**3**|**4**|**5**|**6**|**7**|**8**|**9**|**10**|**11**|**12**|**13**|**14**|**15**|**16**|
-| :- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-|History block|N event|Side|Moment flip|Duration side|
+<table>
+    <thead width>
+        <tr>
+           <th>Byte number</th>
+           <th>0</th>
+           <th>1</th>
+           <th>2</th>
+           <th>3</th>
+           <th>4</th>
+           <th>5</th>
+           <th>6</th>
+           <th>7</th>
+           <th>8</th>
+           <th>9</th>
+           <th>10</th>
+           <th>11</th>
+           <th>12</th>
+           <th>13</th>
+           <th>14</th>
+           <th>15</th>
+           <th>16</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+           <td>History block</td>
+           <td colspan=4; align = "center">N event</td>
+           <td>Side</td>
+           <td colspan=8; align = "center">Moment flip</td>
+           <td colspan=4; align = "center">Duration side</td>
+        </tr>
+    </tbody>
+</table>
+
 If Side = 66, the side is not defined, accelerometer error.
 
 If Side is >127, the event is “pause” for the task number: Side – 128.
@@ -192,15 +225,96 @@ The last package contains zeros, it thus communicates the end of history data tr
 
 After the request (0x02) is sent, all intervals starting from the current and that lasted for at least 5 seconds will be written to the characteristic. Example:
 
-|**Byte number**|**0**|**1**|**2**|**3**|**4**|**5**|**6**|**7**|**8**|**9**|**10**|**11**|**12**|**13**|**14**|**15**|**16**|**17**|**18**|**19**|
-| :- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-|History block|N event|Side|Moment flip|Duration side|N previous event|
+<table>
+    <thead width>
+        <tr>
+           <th>Byte number</th>
+           <th>0</th>
+           <th>1</th>
+           <th>2</th>
+           <th>3</th>
+           <th>4</th>
+           <th>5</th>
+           <th>6</th>
+           <th>7</th>
+           <th>8</th>
+           <th>9</th>
+           <th>10</th>
+           <th>11</th>
+           <th>12</th>
+           <th>13</th>
+           <th>14</th>
+           <th>15</th>
+           <th>16</th>
+           <th>17</th>
+           <th>18</th>
+           <th>19</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+           <td>History block</td>
+           <td colspan=4; align = "center">N event</td>
+           <td>Side</td>
+           <td colspan=8; align = "center">Moment flip</td>
+           <td colspan=4; align = "center">Duration side</td>
+           <td colspan=3; align = "center">N previous event</td>
+        </tr>
+    </tbody>
+</table>
 
 The last package contains zeros and the number of the previous event in the sequence. This package communicates the end of history data transmission. Example:
 
-|**Byte number**|**0**|**1**|**2**|**3**|**4**|**5**|**6**|**7**|**8**|**9**|**10**|**11**|**12**|**13**|**14**|**15**|**16**|**17**|**18**|**19**|
-| :- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-|History block|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|N previous event|
+<table>
+    <thead width>
+        <tr>
+           <th>Byte number</th>
+           <th>0</th>
+           <th>1</th>
+           <th>2</th>
+           <th>3</th>
+           <th>4</th>
+           <th>5</th>
+           <th>6</th>
+           <th>7</th>
+           <th>8</th>
+           <th>9</th>
+           <th>10</th>
+           <th>11</th>
+           <th>12</th>
+           <th>13</th>
+           <th>14</th>
+           <th>15</th>
+           <th>16</th>
+           <th>17</th>
+           <th>18</th>
+           <th>19</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+           <td>History block</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td>0</td>
+           <td colspan=3; align = "center">N previous event</td>
+        </tr>
+    </tbody>
+</table>
 
 
 
